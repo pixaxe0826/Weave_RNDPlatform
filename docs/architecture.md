@@ -30,8 +30,9 @@ flowchart TB
 | Runtime | Start and observe real native processes under the granted allocation |
 | Provider | Normalize platform/backend facts into versioned Fabric contracts |
 
-Windows service mode is implemented for the Controller and Store; its further
-physical deployment acceptance is in progress. This is distinct from the future
+Windows service mode is implemented for the Controller and Store, and the
+operating service cutover passed actual deployment checks. Further unattended-boot
+and crash-recovery acceptance is in progress. This is distinct from the future
 cross-platform deployment lifecycle milestone.
 
 ## Heterogeneous Node contexts

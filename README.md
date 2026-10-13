@@ -1,5 +1,11 @@
 # Weave | R&D Fabric
 
+## At a glance
+
+- **Implementation project:** 39 merged PRs and 43 ADRs.
+- **4 execution contexts:** Windows native; Linux AMD64; AMD GPU/ROCm; Android ARM64 Termux/PRoot.
+- **Latest recorded Go sweep (PR #42):** 876 passed, 0 failed, 7 skipped.
+
 **A personal, local-first R&D execution fabric that lets heterogeneous machines
 work together through governed Jobs, resource Leases, and verified artifacts.**
 
@@ -38,8 +44,10 @@ The aim is to reuse available hardware without requiring a homogeneous cluster.
 | Agent | Node observations, authenticated control and independent local enforcement |
 | Runtime | Actual native execution, owned process lifetime and execution evidence |
 
-Controller and Store have native Windows service mode implementations. Compute
-evidence includes selected Windows native, Linux AMD64, AMD GPU/ROCm, and Android
+Controller and Store have native Windows service implementations with an
+operating service cutover PASS record. Further unattended-boot and crash-recovery
+acceptance is in progress. Compute evidence includes selected Windows native,
+Linux AMD64, AMD GPU/ROCm, and Android
 ARM64 Termux/PRoot environments. These are bounded qualification contexts, not
 universal platform or hardware support.
 
@@ -50,11 +58,12 @@ management maturity phase**.
 
 | Area | State |
 |---|---|
-| Native Jobs, deterministic scheduling, Store-backed workflows and large-data transfer/cache | Implemented, with bounded actual-device acceptance records |
+| Native Jobs, deterministic scheduling, Store-backed workflows and large-data transfer/cache | Implemented, with actual-device acceptance records |
 | Resource envelopes, performance observations, passive task history and Shadow ETA | Implemented; Shadow ETA does not change current placement |
-| Renewable Leases | Implemented, with bounded long-running CPU qualification |
+| Renewable Leases | Implemented, with long-running CPU acceptance records |
 | Linux privileged-management package | Delivered within an operator-approved, bounded inspection/policy scope; package closure is not full qualification |
-| C1 identity transfer and Windows service mode | Implemented and tested; further physical acceptance is in progress |
+| C1 identity transfer | C1: implemented, and passed actual-device acceptance on one Android ARM64 Node. Identity transfer for other Nodes is in progress. |
+| Windows Controller and Store services | Operating service cutover passed deployment checks; further unattended-boot and crash-recovery acceptance is in progress |
 | Fixed Linux Agent/Runtime pair maintenance | Implemented and tested; physical acceptance is in progress |
 | Adaptive ETA scheduling and extended accelerator memory/performance models | Planned |
 | Persistent Workspace platform, deployment lifecycle, visual workflow, operations portal and AI orchestration | Planned |

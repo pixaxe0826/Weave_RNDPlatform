@@ -83,5 +83,9 @@ Resume releases only the selected migration drain. It does not clear an unrelate
 management hold or rewrite historical outcomes. Connection, acceptance receipt
 and ordinary admission are deliberately separate milestones.
 
-C1 is implemented and covered by contract/integration tests. Further physical
-acceptance is in progress; test vectors do not establish every deployed environment.
+C1: implemented, and passed actual-device acceptance on one Android ARM64 Node.
+The 2026-10-13 AT-C1-01 acceptance covered identity transfer, reconnection,
+resume using the existing receipt, an actual CPU Job, Lease release, Store receipt
+and ACK, and a post-transfer exporter observation.
+Identity transfer for other Nodes is in progress. This acceptance does not
+establish every deployed environment.

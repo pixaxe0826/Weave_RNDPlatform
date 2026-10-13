@@ -2,20 +2,20 @@
 
 The project advances through contract-led vertical slices, not a list of machines
 to support. Every milestone identifies a capability, its normalized contract,
-Provider responsibilities and a bounded acceptance matrix.
+Provider responsibilities and an explicit acceptance matrix.
 
 ## Milestone progression
 
 | Stage | Engineering focus | Current interpretation |
 |---|---|---|
 | M0 | Standalone Controller, local Agent, durable state and basic Jobs | Implemented |
-| M1 | Approved multi-Node identity, transport and reconciliation | Implemented with bounded acceptance |
-| M1.5 | Independent Runtime protocol and execution fencing | Implemented with bounded acceptance |
-| M2 and integration increments | Native execution, remote Jobs and verified input/output handoff | Implemented with bounded acceptance |
+| M1 | Approved multi-Node identity, transport and reconciliation | Implemented with acceptance records |
+| M1.5 | Independent Runtime protocol and execution fencing | Implemented with acceptance records |
+| M2 and integration increments | Native execution, remote Jobs and verified input/output handoff | Implemented with acceptance records |
 | M2.5 | Resource Providers, GPU execution, telemetry and large-data transfer/cache | Implemented with qualified environment records |
 | M2.6 | Deterministic, explainable placement | Implemented |
-| M3 | Distributed DAG workflows using ordinary Jobs | Implemented with bounded cross-platform acceptance |
-| M3.5 | Resource envelopes, performance history, Shadow ETA, renewable Leases and bounded management | Current maturity phase; delivered increments and further work coexist |
+| M3 | Distributed DAG workflows using ordinary Jobs | Implemented with cross-platform acceptance records |
+| M3.5 | Resource envelopes, performance history, Shadow ETA, renewable Leases and typed management | Current maturity phase; delivered increments and further work coexist |
 | M4 and M4.5 | Persistent Workspace platform and source/environment/execution binding | Planned main integration |
 | M5 and M5.5 | Persistent deployment lifecycle and visual workflows | Planned |
 | M6 and M6.5 | Operations portal and platform hardening/recovery | Planned |
@@ -28,10 +28,16 @@ deployment milestone. Shadow ETA does not enable adaptive scheduling.
 
 M3.5 management has an operator-approved package-definition closure for a bounded
 Linux scope. That is not a full qualification verdict. Lifecycle/recovery work
-continues on the roadmap, while C1, fixed Linux Agent/Runtime pair maintenance,
-and Windows service mode have merged implementations with further physical
-acceptance in progress. The bounded pair maintenance flow is not completion of
-the broader persistent deployment platform.
+continues on the roadmap. C1: implemented, and passed actual-device acceptance
+on one Android ARM64 Node. The 2026-10-13 AT-C1-01 result covers transfer,
+reconnection, existing-receipt resume, an actual CPU Job with Lease release and
+Store receipt/ACK, and post-transfer exporter observation.
+Identity transfer for other Nodes is in progress.
+
+The operating Windows Controller/Store service cutover passed deployment checks;
+unattended-boot and crash-recovery acceptance is in progress. Fixed Linux
+Agent/Runtime pair maintenance is implemented and tested, with physical acceptance
+in progress. These deliveries do not complete the broader deployment platform.
 
 ## Evidence before verdict
 
@@ -57,8 +63,8 @@ than accepting a success banner. Fixes append new source-bound results; they do
 not turn an earlier failure into a historical pass. Merged code, installed code,
 unit tests and physical qualification are separate facts.
 
-One recorded same-host Go test/subtest sweep for a continuity change reported
-**838 passed, 0 failed and 7 skipped**. Those are snapshot test results, not a
+The latest recorded same-host Go test/subtest sweep in PR #42 reported
+**876 passed, 0 failed and 7 skipped**. Those are snapshot test results, not a
 performance benchmark or a device-qualification total.
 
 ## AI-assisted development
@@ -83,14 +89,20 @@ The development assistant is not the product's resource Scheduler.
 
 ### Failure handling: A / B / C
 
-These labels summarize the repository's existing work rules for this showcase;
-they are not a new runtime protocol or additional execution permissions.
-
 | Policy | Situation | Response |
 |---|---|---|
-| A — Correct within scope | A defect introduced by the approved change can be repaired without changing its authority or shared contract | Make the smallest correction and rerun the affected validation; preserve the earlier result |
-| B — Request a decision | The proposed remedy changes a shared contract, product behavior, data, cost, privilege or irreversible scope | Explain the evidence and proposed boundary; obtain a decision before the affected action while continuing independent approved work |
-| C — Stop the affected action | Required authority, access or environment evidence is unavailable | Report the exact blocker and NOT RUN/NOT VERIFIED boundary; do not invent access, repeat an unchanged failing method or infer success |
+| A — Session tooling | Problems in the tool environment or session helper scripts | Correct without a numerical cap, subject to the common rules below |
+| B — Operational tools and plans | Corrections to operational tools or plans within the approved scope | At most 15 corrections per task; preserve originals, create a new revision, and add tests for failure cases |
+| C — Stop and escalate | Product or contract changes, weakening checks, privilege elevation, signing, ACL or CA changes, irreversible actions, device power actions, or unexpected operational state | Stop immediately and obtain an operator decision |
+
+Common rules:
+
+- Try the same failure with the same method at most twice. On the third occurrence
+  of the same cause, report a structural problem instead of repeating that method.
+- Record every action in a fix log. An independent reviewer judges the validity
+  of each action.
+- Unlimited Class A corrections do not waive these common rules or authorize
+  a Class C action.
 
 The eventual product goal is for humans and external AI systems to describe
 workflows and constraints while Fabric resolves resources, execution and evidence
