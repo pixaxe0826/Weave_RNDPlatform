@@ -10,6 +10,7 @@ import (
 // Evaluate extracts Node/resource eligibility from an already normalized snapshot.
 // Storage/network eligibility, score-vector construction and Lease issuance are
 // outside this sample. The caller supplies the policy timeout and reservations.
+// It explains exclusions without granting Jobs or changing admission state.
 func Evaluate(n *Node, resources []Resource, requirements []Requirement, occupied map[string]bool, reserved map[string]int, limits *Limits, now time.Time, heartbeatTimeout time.Duration) Candidate {
 	v := Candidate{Node: *n, Resources: append([]Resource{}, resources...), Occupied: occupied, Reserved: reserved, Exclusions: []string{}, SelectedResources: []string{}, Quantities: map[string]int{}}
 	sort.Slice(v.Resources, func(i, k int) bool { return v.Resources[i].ID < v.Resources[k].ID })
@@ -63,6 +64,7 @@ func Evaluate(n *Node, resources []Resource, requirements []Requirement, occupie
 				continue
 			}
 			free = true
+			// CPU rates use basis points: 10000 represents 100% of resource capacity.
 			if limits != nil && (q.Kind == "cpu" && uint64(limits.CPURate)*uint64(r.Capacity["quantity"]) > uint64(quantity)*10000 || q.Kind == "memory" && limits.MemoryMiB > uint64(quantity)) {
 				continue
 			}
@@ -101,6 +103,7 @@ func Evaluate(n *Node, resources []Resource, requirements []Requirement, occupie
 
 // Rank compares caller-supplied, equal-length finite score vectors. It does not
 // build cache/network/telemetry scores or allocate resources.
+// All vectors must have the same length and contain only finite values (no NaN or infinity).
 func Rank(candidates []Candidate) Decision {
 	d := Decision{Candidates: candidates, Reason: "NO_ELIGIBLE_NODE"}
 	choices := []Candidate{}
@@ -171,6 +174,7 @@ func (r Requirement) Bounds() ResourceEnvelope {
 
 func portReady(n *Node, id string) bool {
 	for _, p := range n.Ports {
+		// Port observations expire at three seconds of age relative to the last heartbeat.
 		if p.ResourceID == id && p.Available && n.LastHeartbeatAt.Sub(p.ObservedAt) >= -time.Second && n.LastHeartbeatAt.Sub(p.ObservedAt) < 3*time.Second {
 			return true
 		}

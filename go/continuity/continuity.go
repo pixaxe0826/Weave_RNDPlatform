@@ -16,6 +16,7 @@ type State struct {
 	ContinuityFloor uint64
 }
 
+// NextGeneration returns max(last, floor) + 1, rejecting generation overflow.
 func NextGeneration(last, floor uint64) (uint64, error) {
 	n := max(last, floor)
 	if n == math.MaxUint64 {
@@ -25,6 +26,7 @@ func NextGeneration(last, floor uint64) (uint64, error) {
 }
 
 // ValidateTransition is the pure guard, without the surrounding database update.
+// It rejects a changed Controller identity or a lower floor or generation.
 func ValidateTransition(prior, state State) error {
 	if prior.ControllerID != state.ControllerID || state.ContinuityFloor < prior.ContinuityFloor || state.Generation < prior.Generation {
 		return errors.New("CONTINUITY_MONOTONIC_STATE_VIOLATION")
@@ -32,6 +34,7 @@ func ValidateTransition(prior, state State) error {
 	return nil
 }
 
+// ReadHighWater reads explicit integer fences and rejects missing or null evidence.
 // JSON null must not become uint64(0). The producer persists integer fences.
 func ReadHighWater(b []byte, field string) (map[string]uint64, error) {
 	var root map[string]json.RawMessage

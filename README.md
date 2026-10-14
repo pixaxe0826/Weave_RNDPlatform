@@ -87,7 +87,7 @@ systemd · Python acceptance tooling.
 - [Placement](go/placement): Node/resource eligibility checks and deterministic
   lexicographic ranking with a stable tie-break. Minimal normalized inputs replace
   private dependencies; score construction and execution authority are excluded.
-  See [placement and execution](docs/architecture.md#workflow-composition).
+  See [placement and execution](docs/architecture.md#heterogeneous-node-contexts).
 
 Both packages share a standard-library-only Go module. From the `go` directory,
 run `go vet ./...` and `go test ./...`. These are standalone excerpts, not the
